@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alexi-Bot</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <!-- Header -->
+    <header class="popup-header">
+      <div class="logo-section">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="12" cy="12" r="2" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <h1>Alexi-Bot</h1>
+          <p class="tagline">Understand words in context</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- Auth Section -->
+    <section class="auth-section" id="authSection">
+      <!-- Logged Out State -->
+      <div class="auth-logged-out" id="loggedOutState">
+        <div class="auth-message">
+          <svg class="auth-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="7" r="4"/>
+            <path d="M5.5 21a7.5 7.5 0 0 1 13 0"/>
+          </svg>
+          <span>Sign in to unlock all features</span>
+        </div>
+        <button class="btn btn-primary" id="loginBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+            <polyline points="10 17 15 12 10 7"/>
+            <line x1="15" y1="12" x2="3" y2="12"/>
+          </svg>
+          Login
+        </button>
+      </div>
+
+      <!-- Logged In State -->
+      <div class="auth-logged-in hidden" id="loggedInState">
+        <div class="user-info">
+          <div class="user-avatar" id="userAvatar">U</div>
+          <div class="user-details">
+            <span class="user-email" id="userEmail">user@example.com</span>
+            <span class="connection-status">
+              <span class="status-dot"></span>
+              Connected
+            </span>
+          </div>
+        </div>
+        <button class="btn btn-ghost" id="logoutBtn" title="Sign out">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" y1="12" x2="9" y2="12"/>
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- Divider -->
+    <div class="divider"></div>
+
+    <!-- Toggle Section -->
+    <section class="toggle-section">
+      <div class="toggle-info">
+        <span class="toggle-label">Enable Tooltip</span>
+        <span class="toggle-description">Show definitions on text selection</span>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="tooltipToggle" checked>
+        <span class="toggle-slider"></span>
+      </label>
+    </section>
+
+    <!-- Stats Section (shown when logged in) -->
+    <section class="stats-section hidden" id="statsSection">
+      <div class="stat-item">
+        <span class="stat-value" id="wordsLearned">0</span>
+        <span class="stat-label">Words Learned</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value" id="todayLookups">0</span>
+        <span class="stat-label">Today</span>
+      </div>
+    </section>
+
+    <!-- Divider -->
+    <div class="divider"></div>
+
+    <!-- Actions -->
+    <section class="actions-section">
+      <a href="#" class="action-link" id="dashboardLink">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7"/>
+          <rect x="14" y="3" width="7" height="7"/>
+          <rect x="14" y="14" width="7" height="7"/>
+          <rect x="3" y="14" width="7" height="7"/>
+        </svg>
+        Open Dashboard
+        <svg class="arrow-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="7" y1="17" x2="17" y2="7"/>
+          <polyline points="7 7 17 7 17 17"/>
+        </svg>
+      </a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="popup-footer">
+      <span class="version">v1.0.0</span>
+      <a href="https://alexibot.com/help" class="help-link" id="helpLink">Help</a>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

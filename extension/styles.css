@@ -1,0 +1,292 @@
+/**
+ * Alexi-Bot Content Script Styles
+ * Tooltip styling for word definitions
+ */
+
+/* ============================================
+   CSS Variables
+   ============================================ */
+.alexi-tooltip {
+  --alexi-primary: #1e3a5f;
+  --alexi-primary-light: #2d5a87;
+  --alexi-bg: #ffffff;
+  --alexi-bg-secondary: #f8fafc;
+  --alexi-text: #0f172a;
+  --alexi-text-secondary: #475569;
+  --alexi-text-muted: #94a3b8;
+  --alexi-border: #e2e8f0;
+  --alexi-success: #10b981;
+  --alexi-error: #ef4444;
+  --alexi-shadow: 0 10px 40px -5px rgba(0, 0, 0, 0.15), 0 4px 12px -2px rgba(0, 0, 0, 0.1);
+  --alexi-radius: 12px;
+  --alexi-transition: 200ms ease;
+}
+
+/* Dark mode detection */
+@media (prefers-color-scheme: dark) {
+  .alexi-tooltip {
+    --alexi-bg: #1e293b;
+    --alexi-bg-secondary: #334155;
+    --alexi-text: #f1f5f9;
+    --alexi-text-secondary: #cbd5e1;
+    --alexi-text-muted: #64748b;
+    --alexi-border: #475569;
+    --alexi-shadow: 0 10px 40px -5px rgba(0, 0, 0, 0.4), 0 4px 12px -2px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* ============================================
+   Tooltip Container
+   ============================================ */
+.alexi-tooltip {
+  position: absolute;
+  z-index: 2147483647;
+  width: 320px;
+  max-width: calc(100vw - 40px);
+  background: var(--alexi-bg);
+  border: 1px solid var(--alexi-border);
+  border-radius: var(--alexi-radius);
+  box-shadow: var(--alexi-shadow);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--alexi-text);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px) scale(0.96);
+  transition: 
+    opacity var(--alexi-transition),
+    visibility var(--alexi-transition),
+    transform var(--alexi-transition);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.alexi-tooltip.alexi-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+/* ============================================
+   Tooltip Content
+   ============================================ */
+.alexi-tooltip-content {
+  display: block;
+}
+
+.alexi-tooltip.alexi-loading .alexi-tooltip-content,
+.alexi-tooltip.alexi-error .alexi-tooltip-content {
+  display: none;
+}
+
+/* Header */
+.alexi-tooltip-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 16px 16px 12px;
+  border-bottom: 1px solid var(--alexi-border);
+}
+
+.alexi-word {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--alexi-text);
+  letter-spacing: -0.02em;
+}
+
+.alexi-pronunciation {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.alexi-ipa {
+  font-size: 13px;
+  color: var(--alexi-text-muted);
+  font-style: italic;
+}
+
+.alexi-speak-btn, .alexi-save-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: var(--alexi-bg-secondary);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--alexi-text-secondary);
+  transition: all var(--alexi-transition);
+}
+
+
+
+.alexi-speak-btn:hover {
+  background: var(--alexi-primary);
+  color: white;
+}
+
+.alexi-save-btn:hover {
+  background: var(--alexi-primary);
+  color: white;
+}
+
+.alexi-speak-btn:focus {
+  outline: 2px solid var(--alexi-primary-light);
+  outline-offset: 2px;
+}
+
+/* Body */
+.alexi-tooltip-body {
+  padding: 12px 16px;
+}
+
+.alexi-meaning {
+  margin: 0 0 8px;
+  color: var(--alexi-text);
+  font-size: 14px;
+}
+
+.alexi-example {
+  margin: 0 0 10px;
+  padding: 8px 12px;
+  background: var(--alexi-bg-secondary);
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--alexi-text-secondary);
+  font-style: italic;
+}
+
+.alexi-synonyms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+}
+
+.alexi-synonyms-label {
+  font-size: 12px;
+  color: var(--alexi-text);
+  font-weight: 500;
+  margin-right: 4px;
+}
+
+.alexi-synonyms-list {
+  font-size: 13px;
+  color: var(--alexi-text-secondary);
+}
+
+/* Footer */
+.alexi-tooltip-footer {
+  padding: 10px 16px;
+  background: var(--alexi-bg-secondary);
+  border-top: 1px solid var(--alexi-border);
+  border-radius: 0 0 var(--alexi-radius) var(--alexi-radius);
+}
+
+.alexi-powered {
+  font-size: 11px;
+  color: var(--alexi-text-muted);
+}
+
+/* ============================================
+   Loading State
+   ============================================ */
+.alexi-tooltip-loader {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  gap: 12px;
+}
+
+.alexi-tooltip.alexi-loading .alexi-tooltip-loader {
+  display: flex;
+}
+
+.alexi-spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--alexi-border);
+  border-top-color: var(--alexi-primary);
+  border-radius: 50%;
+  animation: alexi-spin 0.8s linear infinite;
+}
+
+@keyframes alexi-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.alexi-tooltip-loader span {
+  font-size: 13px;
+  color: var(--alexi-text-muted);
+}
+
+/* ============================================
+   Error State
+   ============================================ */
+.alexi-tooltip-error {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  gap: 12px;
+  text-align: center;
+}
+
+.alexi-tooltip.alexi-error .alexi-tooltip-error {
+  display: flex;
+}
+
+.alexi-tooltip-error svg {
+  color: var(--alexi-error);
+}
+
+.alexi-error-message {
+  font-size: 13px;
+  color: var(--alexi-text-secondary);
+}
+
+.alexi-login-btn {
+  display: none;
+  padding: 8px 20px;
+  background: var(--alexi-primary);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--alexi-transition);
+}
+
+.alexi-login-btn:hover {
+  background: var(--alexi-primary-light);
+}
+
+/* ============================================
+   Accessibility
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  .alexi-tooltip {
+    transition: none;
+  }
+  
+  .alexi-spinner {
+    animation: none;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .alexi-tooltip {
+    border-width: 2px;
+  }
+}

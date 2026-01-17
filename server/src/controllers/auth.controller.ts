@@ -42,6 +42,9 @@ export class AuthController {
 
   static async login(req: Request, res: Response) {
     try {
+      if(req.data) return ApiResponse.success(res, 
+        'User login successfully', req.data
+      );
       const {email, password}: LoginDTO = req.body;
       const user = await UserModel.findByEmail(email);
 
@@ -49,7 +52,7 @@ export class AuthController {
         'invalid user email'
       );
 
-      const isValidPassword = Bun.password.verify(
+      const isValidPassword = await Bun.password.verify(
         password,
         user.password_hash
       );

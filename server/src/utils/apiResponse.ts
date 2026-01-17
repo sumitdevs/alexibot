@@ -4,7 +4,7 @@ export class ApiResponse {
 
     static success(res: Response, message: string, data?: any) {
         return res.status(200).json({
-            suceess: true,
+            success: true,
             message,
             data: data ?? null
         })
