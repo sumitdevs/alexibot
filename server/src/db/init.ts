@@ -1,6 +1,9 @@
 import { db } from "../config/db.config";
 
+
+
 // words table
+
 await db`
 CREATE TABLE IF NOT EXISTS words (
   word_id SERIAL PRIMARY KEY,
