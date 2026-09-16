@@ -145,7 +145,7 @@ export default function WordBank() {
                               )} */}
                             </div>
                           </div>
-                          <p className="text-sm text-muted-foreground mt-1 truncate">
+                          <p className="text-sm max-w-xl text-muted-foreground mt-1 truncate">
                             {word.gloss}
                           </p>
                           <p className="text-xs text-muted-foreground mt-1">

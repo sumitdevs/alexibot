@@ -171,7 +171,7 @@ export default function History() {
                   
                   {/* Feedback */}
                   <div className="sm:col-span-1">
-                    {renderStars(item.feedback)}
+                    {renderStars(Math.ceil(item.similarity*10))}
                   </div>
                   
                   {/* Actions */}

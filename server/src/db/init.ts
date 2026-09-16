@@ -70,6 +70,7 @@ CREATE TABLE IF NOT EXISTS user_history (
   word_id INTEGER NOT NULL REFERENCES WORDS(word_id) ON DELETE CASCADE,
   context TEXT,
   synset_id BIGINT NOT NULL REFERENCES synsets(synset_id) ON DELETE CASCADE,
+  similarity REAL NOT NULL CHECK (similarity BETWEEN 0.0 AND 1.0),
   created_at TIMESTAMP DEFAULT NOW()
 );
 `;
