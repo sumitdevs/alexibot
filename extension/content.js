@@ -1,7 +1,3 @@
-/**
- * Alexi-Bot Content Script
- * Handles text selection, context extraction, and tooltip display
- */
 
 (function () {
   "use strict";
