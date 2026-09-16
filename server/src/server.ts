@@ -32,7 +32,8 @@ app.use((req, res, next) => {
   });
 
   next();
-})
+});
+
 app.use('/api/auth', authRoutes);
 app.use('/api/dictionary', dictionaryRoutes);
 app.use('/api/user', userRoutes);

@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { WordModel, SynsetModel } from '../models/word.model';
 import { ApiResponse } from '../utils/apiResponse';
 import { UserHistoryModel } from '../models/user.model';
+import { mean } from '@xenova/transformers';
 
 export class DictionaryController {
   static async searchWord(req: Request, res: Response): Promise<any> {
@@ -32,12 +33,15 @@ export class DictionaryController {
         return ApiResponse.success(res, 'No words found matching the context', []);
       }
       
-      // await UserHistoryModel.addToHistory(
-      //   req.user?.id as number,
-      //   meaning.word_id,
-      //   meaning.synset_id,
-      //   context || null
-      // );
+      await UserHistoryModel.addToHistory(
+        req.data.user?.id as number,
+        meaning.word_id,
+        meaning.synset_id,
+        meaning.similarity,
+        context || null,
+      );
+
+      console.log(meaning);
       
       return ApiResponse.success(res, `Found word matching context`, meaning);
     } catch (error) {

@@ -78,36 +78,41 @@ export class UserWordBankModel {
     return result.count > 0;
   }
 
-  static async getUserWords(user_id: number, page = 1, limit = 20): Promise<{ items: any[], total: number }> {
-    const offset = (page - 1) * limit;
+static async getUserWords(
+  user_id: number,
+  page = 1,
+  limit = 20
+): Promise<{ items: any[]; total: number }> {
 
-    const items = await db`
-      SELECT 
-        wb.id,
-        wb.created_at,
-        w.word_id,
-        w.lemma,
-        sy.synset_id,
-        sy.pos,
-        sy.gloss,
-        sy.synonyms
-      FROM word_bank wb
-      INNER JOIN words w ON wb.word_id = w.word_id
-      INNER JOIN synsets sy ON wb.synset_id = sy.synset_id
-      WHERE wb.id = ${user_id}
-      ORDER BY wb.created_at DESC
-      LIMIT ${limit}
-      OFFSET ${offset}
-    `;
+  const offset = (page - 1) * limit;
 
-    const [{ count }] = await db<[{ count: number }]>`
-      SELECT COUNT(*)::int as count 
-      FROM word_bank 
-      WHERE user_id = ${user_id}
-    `;
+  const items = await db`
+    SELECT 
+      wb.id,
+      wb.created_at,
+      w.word_id,
+      w.lemma,
+      sy.synset_id,
+      sy.pos,
+      sy.gloss,
+      sy.synonyms
+    FROM word_bank wb
+    INNER JOIN words w ON wb.word_id = w.word_id
+    INNER JOIN synsets sy ON wb.synset_id = sy.synset_id
+    WHERE wb.user_id = ${user_id}
+    ORDER BY wb.created_at DESC
+    LIMIT ${limit}
+    OFFSET ${offset}
+  `;
 
-    return { items, total: count };
-  }
+  const [{ count }] = await db<[{ count: number }]>`
+    SELECT COUNT(*)::int AS count
+    FROM word_bank
+    WHERE user_id = ${user_id}
+  `;
+
+  return { items, total: count };
+}
 
   static async checkExists(user_id: number, word_id: number, synset_id: number): Promise<boolean> {
     const [result] = await db<[{ exists: boolean }]>`
@@ -125,11 +130,12 @@ export class UserHistoryModel {
     user_id: number ,
     word_id: number,
     synset_id: number,
+    similarity: number,
     context: string | null = null
   ): Promise<any> {
     const [history] = await db`
-      INSERT INTO user_history (user_id, word_id, synset_id, context)
-      VALUES (${user_id}, ${word_id}, ${synset_id}, ${context})
+      INSERT INTO user_history (user_id, word_id, synset_id, context, similarity)
+      VALUES (${user_id}, ${word_id}, ${synset_id}, ${context}, ${similarity})
       RETURNING *
     `;
     return history;
@@ -146,6 +152,7 @@ export class UserHistoryModel {
       SELECT 
         uh.id,
         uh.context,
+        uh.similarity,
         uh.created_at,
         w.word_id,
         w.lemma,
