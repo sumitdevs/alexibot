@@ -39,7 +39,11 @@
    Tooltip Container
    ============================================ */
 .alexi-tooltip {
-  position: absolute;
+  display: none;
+
+  /* position: absolute; */
+  position: fixed;
+
   z-index: 2147483647;
   width: 320px;
   max-width: calc(100vw - 40px);
@@ -63,6 +67,8 @@
 }
 
 .alexi-tooltip.alexi-visible {
+  display: block; 
+
   opacity: 1;
   visibility: visible;
   transform: translateY(0) scale(1);

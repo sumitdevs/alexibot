@@ -1,5 +1,6 @@
 import { db } from '../config/db.config';
 import { Embedder } from '../services/embedder';
+import pluralize from 'pluralize';
 
 import type { 
   Word, 
@@ -10,9 +11,22 @@ import type {
 } from '../types/dictionary.type';
 
 export class WordModel {
+  private static normalizeLookupWord(word: string) {
+    const exact = word.trim().toLowerCase();
+    return {
+      exact,
+      singular: pluralize.singular(exact),
+    };
+  }
+
   static async findByLemma(lemma: string): Promise<Word | null> {
+    const { exact, singular } = this.normalizeLookupWord(lemma);
     const [word] = await db<Word[]>`
-      SELECT * FROM words WHERE LOWER(lemma) = LOWER(${lemma})
+      SELECT *
+      FROM words
+      WHERE LOWER(lemma) = ${exact} OR LOWER(lemma) = ${singular}
+      ORDER BY CASE WHEN LOWER(lemma) = ${exact} THEN 0 ELSE 1 END
+      LIMIT 1
     `;
     return word || null;
   }
@@ -65,6 +79,7 @@ export class WordModel {
 
  static async searchWordInContext(word: string, context: string) {
   const embedder = Embedder.getInstance();
+  const { exact, singular } = this.normalizeLookupWord(word);
   let embedding = await embedder.embed(context);
 
   const norm = Math.hypot(...embedding);
@@ -73,22 +88,11 @@ export class WordModel {
   const wordRow = await db`
     SELECT word_id, lemma
     FROM words
-    WHERE lemma = ${word} 
-    OR lemma = LOWER(${word})
-    LIMIT 1;
+    WHERE LOWER(lemma) = ${exact}
+       OR LOWER(lemma) = ${singular}
+    ORDER BY CASE WHEN LOWER(lemma) = ${exact} THEN 0 ELSE 1 END
+    LIMIT 1
   `;
-
-//   const wordRow = await db`
-//   SELECT word_id, lemma
-//   FROM words
-//   WHERE
-//     LOWER(lemma) = LOWER(${word})                  -- exact match
-//     OR LOWER(lemma) LIKE LOWER(${word}) || '%'     -- plural/suffix
-//   LIMIT 1;
-// `;
-
-
-
 
   if (!wordRow[0]) return null;
 
