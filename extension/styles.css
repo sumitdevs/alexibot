@@ -40,6 +40,7 @@
    ============================================ */
 .alexi-tooltip {
   position: absolute;
+  display: none;
   z-index: 2147483647;
   width: 320px;
   max-width: calc(100vw - 40px);
@@ -52,19 +53,18 @@
   line-height: 1.5;
   color: var(--alexi-text);
   opacity: 0;
-  visibility: hidden;
   transform: translateY(8px) scale(0.96);
   transition: 
     opacity var(--alexi-transition),
-    visibility var(--alexi-transition),
+    display var(--alexi-transition),
     transform var(--alexi-transition);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 .alexi-tooltip.alexi-visible {
+  display: block;
   opacity: 1;
-  visibility: visible;
   transform: translateY(0) scale(1);
 }
 
